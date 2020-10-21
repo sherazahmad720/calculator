@@ -13,10 +13,12 @@ double inchResult = 0;
 double feetResult = 0;
 bool isLengthConverter = false;
 String lengthOptr = "";
+bool lastOptrIsLength = false;
 calculation(String input) {
   // If user press the clear button
 
   if (input != "inch") {
+    lastOptrIsLength = false;
     if (input == "C") {
       num1List = [];
       num2List = [];
@@ -29,15 +31,22 @@ calculation(String input) {
       inch2 = "";
       feet1 = "";
       feet2 = "";
+      isLengthConverter = false;
       return;
     }
     // if two value are available then the '=' work
     if (num1List.length != 0 && num2List.length != 0 && input == "=") {
       allOperations();
-      _parameters = [];
-      num1List = ["$result"];
-      num2List = [];
-      allInputs = ["$result"];
+      if (isLengthConverter) {
+        inch2 = "";
+        _parameters = [];
+        allInputs = ["$inchResult inch"];
+      } else {
+        _parameters = [];
+        num1List = ["$result"];
+        num2List = [];
+        allInputs = ["$result"];
+      }
       return;
     } else if (num2List.length == 0 && input == "=")
       return; // if one value input then press '=' then it did nothing
@@ -68,18 +77,22 @@ calculation(String input) {
     }
     if (input == "+" || input == "-" || input == "x" || input == "/") {
       lengthOptr = "";
-      if (_parameters.length == 0) {
-        // When for the first time we hit any Operator button
-        _parameters.add(input);
-      } else {
-        allOperations();
-        // When we press any operator button for the second time
-        _parameters.add(input);
+      if (num1List.length != 0) {
+        if (_parameters.length == 0) {
+          // When for the first time we hit any Operator button
+          _parameters.add(input);
+        } else {
+          allOperations();
+          // When we press any operator button for the second time
+          _parameters.add(input);
+        }
       }
     }
 
-    allInputs.add(input);
-    displayInputs = allInputs.join();
+    if (num1List.length != 0 || _parameters.length != 0) {
+      allInputs.add(input);
+      displayInputs = allInputs.join();
+    }
   } else if (_parameters.length == 0 || inch1 != "") {
     isLengthConverter = true;
 //here is code for length measured
@@ -103,7 +116,7 @@ void allOperations() {
   if (_parameters[_parameters.length - 1] == "+") {
     if (isLengthConverter) {
       num2List = [];
-      double inchResult = addition(inch1, inch2);
+      inchResult = addition(inch1, inch2);
       inch1 = "$inchResult";
       inch2 = "";
       // feetResult = inchResult;
@@ -117,20 +130,53 @@ void allOperations() {
       result = sum;
     }
   } else if (_parameters[_parameters.length - 1] == "-") {
-    double subtract = subtraction(num1List.join(), num2List.join());
-    num1List = ["$subtract"];
-    num2List = [];
-    result = subtract;
+    if (isLengthConverter) {
+      num2List = [];
+      inchResult = subtraction(inch1, inch2);
+      inch1 = "$inchResult";
+      inch2 = "";
+      // feetResult = inchResult;
+      _parameters = [];
+
+      allInputs = ["$inchResult inch"];
+    } else {
+      double subtract = subtraction(num1List.join(), num2List.join());
+      num1List = ["$subtract"];
+      num2List = [];
+      result = subtract;
+    }
   } else if (_parameters[_parameters.length - 1] == "x") {
-    double multi = multiplication(num1List.join(), num2List.join());
-    num1List = ["$multi"];
-    num2List = [];
-    result = multi;
+    if (isLengthConverter) {
+      num2List = [];
+      inchResult = multiplication(inch1, inch2);
+      inch1 = "$inchResult";
+      inch2 = "";
+      // feetResult = inchResult;
+      _parameters = [];
+
+      allInputs = ["$inchResult inch"];
+    } else {
+      double multi = multiplication(num1List.join(), num2List.join());
+      num1List = ["$multi"];
+      num2List = [];
+      result = multi;
+    }
   } else if (_parameters[_parameters.length - 1] == "/") {
-    double divi = division(num1List.join(), num2List.join());
-    num1List = ["$divi"];
-    num2List = [];
-    result = divi;
+    if (isLengthConverter) {
+      num2List = [];
+      inchResult = division(inch1, inch2);
+      inch1 = "$inchResult";
+      inch2 = "";
+      // feetResult = inchResult;
+      _parameters = [];
+
+      allInputs = ["$inchResult inch"];
+    } else {
+      double divi = division(num1List.join(), num2List.join());
+      num1List = ["$divi"];
+      num2List = [];
+      result = divi;
+    }
   }
 }
 
