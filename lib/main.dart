@@ -52,7 +52,11 @@ class _CalculatorState extends State<Calculator> {
                 ),
                 Align(
                   child: Text(
-                    result == null ? "" : "$result",
+                    result == null
+                        ? lengthResult == ""
+                            ? ""
+                            : "$lengthResult m"
+                        : "$result",
                     style: kResultTextStyle,
                   ),
                 ),
@@ -61,6 +65,43 @@ class _CalculatorState extends State<Calculator> {
           ),
         ),
         //length functionality button
+        Row(
+          children: <Widget>[
+            ConverterButton(
+              text: "yard",
+              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
+              press: () {
+                setState(
+                  () {
+                    calculation("yard");
+                  },
+                );
+              },
+            ),
+            ConverterButton(
+              text: "feet",
+              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
+              press: () {
+                setState(
+                  () {
+                    calculation("feet");
+                  },
+                );
+              },
+            ),
+            ConverterButton(
+              text: "inch",
+              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
+              press: () {
+                setState(
+                  () {
+                    calculation("inch");
+                  },
+                );
+              },
+            ),
+          ],
+        ),
         Row(
           children: <Widget>[
             ConverterButton(
@@ -76,34 +117,12 @@ class _CalculatorState extends State<Calculator> {
               },
             ),
             ConverterButton(
-              text: " inch",
+              text: "m",
               backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
               press: () {
                 setState(
                   () {
-                    calculation("inch");
-                  },
-                );
-              },
-            ),
-            ConverterButton(
-              text: "feet",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("ft");
-                  },
-                );
-              },
-            ),
-            ConverterButton(
-              text: "mm",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("mm");
+                    calculation("m");
                   },
                 );
               },
@@ -115,6 +134,17 @@ class _CalculatorState extends State<Calculator> {
                 setState(
                   () {
                     calculation("cm");
+                  },
+                );
+              },
+            ),
+            ConverterButton(
+              text: "mm",
+              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
+              press: () {
+                setState(
+                  () {
+                    calculation("mm");
                   },
                 );
               },
