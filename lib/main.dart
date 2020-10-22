@@ -52,7 +52,11 @@ class _CalculatorState extends State<Calculator> {
                 ),
                 Align(
                   child: Text(
-                    result == null ? "" : "$result",
+                    result == null
+                        ? lengthResult == ""
+                            ? ""
+                            : "$lengthResult m"
+                        : "$result",
                     style: kResultTextStyle,
                   ),
                 ),
@@ -64,24 +68,12 @@ class _CalculatorState extends State<Calculator> {
         Row(
           children: <Widget>[
             ConverterButton(
-              text: "Convert",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.3),
-              textColor: kTextColorWhite,
-              press: () {
-                setState(
-                  () {
-                    // calculation("C");
-                  },
-                );
-              },
-            ),
-            ConverterButton(
-              text: " inch",
+              text: "yard",
               backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
               press: () {
                 setState(
                   () {
-                    calculation("inch");
+                    calculation("yard");
                   },
                 );
               },
@@ -92,18 +84,133 @@ class _CalculatorState extends State<Calculator> {
               press: () {
                 setState(
                   () {
-                    calculation("ft");
+                    calculation("feet");
                   },
                 );
               },
             ),
             ConverterButton(
-              text: "mm",
+              text: "inch",
               backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
               press: () {
                 setState(
                   () {
-                    calculation("mm");
+                    calculation("inch");
+                  },
+                );
+              },
+            ),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            ConverterButton(
+              text: "Convert",
+              backgroundColor: kButtonConverterBackgroud.withOpacity(0.3),
+              textColor: kTextColorWhite,
+              press: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 18.0),
+                          child: Container(
+                            height: 300,
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Convert",
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "$displayInputs into",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      RaisedButton(
+                                          color: kButtonBackground
+                                              .withOpacity(0.7),
+                                          onPressed: () {},
+                                          child: Text("Meter")),
+                                      RaisedButton(
+                                          color: kButtonBackground
+                                              .withOpacity(0.7),
+                                          onPressed: () {},
+                                          child: Text("CentiMeter")),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      RaisedButton(
+                                          color: kButtonBackground
+                                              .withOpacity(0.7),
+                                          onPressed: () {},
+                                          child: Text("Meter")),
+                                      RaisedButton(
+                                          color: kButtonBackground
+                                              .withOpacity(0.7),
+                                          onPressed: () {},
+                                          child: Text("CentiMeter")),
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      RaisedButton(
+                                          color: kButtonBackground
+                                              .withOpacity(0.7),
+                                          onPressed: () {},
+                                          child: Text("Meter")),
+                                      RaisedButton(
+                                          color: kButtonBackground
+                                              .withOpacity(0.7),
+                                          onPressed: () {},
+                                          child: Text("CentiMeter")),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    });
+                // setState(
+                //   () {
+
+                //     // calculation("C");
+                //   },
+                // );
+              },
+            ),
+            ConverterButton(
+              text: "m",
+              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
+              press: () {
+                setState(
+                  () {
+                    calculation("m");
                   },
                 );
               },
@@ -115,6 +222,17 @@ class _CalculatorState extends State<Calculator> {
                 setState(
                   () {
                     calculation("cm");
+                  },
+                );
+              },
+            ),
+            ConverterButton(
+              text: "mm",
+              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
+              press: () {
+                setState(
+                  () {
+                    calculation("mm");
                   },
                 );
               },
