@@ -14,6 +14,7 @@ double feetResult = 0;
 bool isLengthConverter = false;
 String lengthOptr = "";
 bool lastOptrIsLength = false;
+bool lastOptr = false;
 calculation(String input) {
   // If user press the clear button
 
@@ -40,7 +41,7 @@ calculation(String input) {
       if (isLengthConverter) {
         inch2 = "";
         _parameters = [];
-        allInputs = ["$inchResult inch"];
+        // allInputs = ["$inchResult inch"];
       } else {
         _parameters = [];
         num1List = ["$result"];
