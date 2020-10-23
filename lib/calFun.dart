@@ -2,7 +2,7 @@ double result;
 
 List<String> num1List = [];
 List<String> num2List = [];
-List<String> _parameters = [];
+List<String> parameters = [];
 String displayInputs;
 List<String> allInputs = [];
 List<String> lengthinputs = [];
@@ -10,6 +10,8 @@ List<String> lengthinputs = [];
 
 //new logic//
 String lengthResult = "";
+String conversionResult = "";
+String convertInto = "";
 double mr1 = 0;
 double mr2 = 0;
 
@@ -17,8 +19,62 @@ double mr2 = 0;
 bool isLengthConverter = false;
 bool isMathCalculation = false;
 String lengthOptr = "";
-bool lastOptrIsLength = false;
+bool lastOptrIsLength = true;
 bool lastOptr = false;
+bool isCalculatoinStart = false;
+conversition(String inputUnit) {
+  if (inputUnit == "yard") {
+    // conversionResult = "${mr1.toString()} $inputUnit";
+    conversionResult = "${(mr1 * 1.094).toString()} $inputUnit";
+    lengthResult = "";
+    // mr1 = mr1 * 1.094;
+    mr2 = 0;
+    parameters = [];
+    allInputs = ["$conversionResult"];
+    result = null;
+  } else if (inputUnit == "m") {
+    // conversionResult = "${mr1.toString()} $inputUnit";
+    conversionResult = "${(mr1).toString()} $inputUnit";
+    // mr1 = mr1;
+    mr2 = 0;
+    parameters = [];
+    allInputs = ["$conversionResult"];
+    result = null;
+  } else if (inputUnit == "feet") {
+    // conversionResult = "${mr1.toString()} $inputUnit";
+    conversionResult = "${(mr1 * 3.281).toString()} $inputUnit";
+    // mr1 = mr1 * 3.281;
+    mr2 = 0;
+    parameters = [];
+    allInputs = ["$conversionResult"];
+    result = null;
+  } else if (inputUnit == "inch") {
+    // conversionResult = "${mr1.toString()} $inputUnit";
+    conversionResult = "${(mr1 * 39.37).toString()} $inputUnit";
+    // mr1 = mr1 * 39.37;
+    mr2 = 0;
+    parameters = [];
+    allInputs = ["$conversionResult"];
+    result = null;
+  } else if (inputUnit == "cm") {
+    // conversionResult = "${mr1.toString()} $inputUnit";
+    conversionResult = "${(mr1 * 100).toString()} $inputUnit";
+    // mr1 = mr1 * 100;
+    mr2 = 0;
+    parameters = [];
+    allInputs = ["$conversionResult"];
+    result = null;
+  } else if (inputUnit == "mm") {
+    // conversionResult = "${mr1.toString()} $inputUnit";
+    conversionResult = "${(mr1 * 1000).toString()} $inputUnit";
+    // mr1 = mr1 * 1000;
+    mr2 = 0;
+    parameters = [];
+    allInputs = ["$conversionResult"];
+    result = null;
+  }
+}
+
 calculation(String input) {
   // If user press the clear button
 
@@ -30,20 +86,22 @@ calculation(String input) {
       input != "mm") {
     //NOTE clear buttion
     if (input == "C") {
+      conversionResult = "";
       lastOptr = false;
       isLengthConverter = false;
       isMathCalculation = false;
       lengthinputs = [];
       mr1 = 0;
       mr2 = 0;
-
+      lastOptrIsLength = true;
       num1List = [];
       num2List = [];
-      _parameters = [];
+      parameters = [];
       allInputs = [];
       displayInputs = null;
       result = null;
       isLengthConverter = false;
+      isCalculatoinStart = false;
       lengthResult = "";
       return;
     }
@@ -54,11 +112,12 @@ calculation(String input) {
       if (isLengthConverter) {
         mr1 = double.parse(lengthResult);
         mr2 = 0;
-        _parameters = [];
+        parameters = [];
         allInputs = ["$lengthResult m"];
         result = null;
       } else {
-        _parameters = [];
+        lastOptr = false;
+        parameters = [];
         num1List = ["$result"];
         num2List = [];
         allInputs = ["$result"];
@@ -78,14 +137,15 @@ calculation(String input) {
         input == "8" ||
         input == "9" ||
         input == ".") {
+      isCalculatoinStart = true;
       lastOptr = false;
       lastOptrIsLength = false;
       lengthOptr = "";
 
-      if (_parameters.length == 0 && result == null) {
+      if (parameters.length == 0 && result == null) {
         num1List.add(input);
         // When pressed "=" after that hit any number
-      } else if (_parameters.length == 0 && result != null) {
+      } else if (parameters.length == 0 && result != null) {
         result = null;
         num1List = [];
         allInputs = [];
@@ -96,27 +156,29 @@ calculation(String input) {
     }
     if (input == "+" || input == "-" || input == "x" || input == "/") {
       lastOptr = true;
-
+      if (!isLengthConverter) {
+        isMathCalculation = true;
+      }
       lengthOptr = "";
       if (num1List.length != 0) {
-        if (_parameters.length == 0) {
+        if (parameters.length == 0) {
           // When for the first time we hit any Operator button
-          _parameters.add(input);
+          parameters.add(input);
         } else {
           allOperations();
           // When we press any operator button for the second time
-          _parameters.add(input);
+          parameters.add(input);
         }
       }
     }
 //NOTE Show on Screen
-    if (num1List.length != 0 || _parameters.length != 0) {
+    if (num1List.length != 0 || parameters.length != 0) {
       // if (!lastOptr) {
       lengthinputs.add(input);
       allInputs.add(input);
       if (lastOptr == true) {
         lengthinputs = [];
-        lastOptr = false;
+        // lastOptr = false;
       }
       displayInputs = allInputs.join();
       // }
@@ -126,7 +188,7 @@ calculation(String input) {
     //NOTE
 //here is code for length measured
 
-    if (num1List.length > 0 && _parameters.length == 0 && lengthOptr == "") {
+    if (num1List.length > 0 && parameters.length == 0 && lengthOptr == "") {
       if (input == "yard") {
         mr1 = mr1 + double.parse(lengthinputs.join()) / 1.094;
       } else if (input == "feet") {
@@ -140,7 +202,7 @@ calculation(String input) {
       } else if (input == "mm") {
         mr1 = mr1 + double.parse(lengthinputs.join()) / 1000;
       }
-      isLengthConverter = true;
+      // isLengthConverter = true;
       lastOptrIsLength = true;
       lengthOptr = input;
       lengthinputs = [];
@@ -171,7 +233,7 @@ calculation(String input) {
 }
 
 void allOperations() {
-  if (_parameters[_parameters.length - 1] == "+") {
+  if (parameters[parameters.length - 1] == "+") {
     if (isLengthConverter) {
       result = mr1 + mr2;
       mr1 = result;
@@ -181,14 +243,14 @@ void allOperations() {
       num2List = [];
       mr2 = 0;
       result = null;
-      _parameters = [];
+      parameters = [];
     } else {
       double sum = addition(num1List.join(), num2List.join());
       num1List = ["$sum"];
       num2List = [];
       result = sum;
     }
-  } else if (_parameters[_parameters.length - 1] == "-") {
+  } else if (parameters[parameters.length - 1] == "-") {
     if (isLengthConverter) {
       result = mr1 - mr2;
       mr1 = result;
@@ -198,14 +260,14 @@ void allOperations() {
       num2List = [];
       mr2 = 0;
       result = null;
-      _parameters = [];
+      parameters = [];
     } else {
       double subtract = subtraction(num1List.join(), num2List.join());
       num1List = ["$subtract"];
       num2List = [];
       result = subtract;
     }
-  } else if (_parameters[_parameters.length - 1] == "x") {
+  } else if (parameters[parameters.length - 1] == "x") {
     if (isLengthConverter) {
       result = mr1 * mr2;
       mr1 = result;
@@ -215,14 +277,14 @@ void allOperations() {
       num2List = [];
       result = null;
       mr2 = 0;
-      _parameters = [];
+      parameters = [];
     } else {
       double multi = multiplication(num1List.join(), num2List.join());
       num1List = ["$multi"];
       num2List = [];
       result = multi;
     }
-  } else if (_parameters[_parameters.length - 1] == "/") {
+  } else if (parameters[parameters.length - 1] == "/") {
     if (isLengthConverter) {
       result = mr1 / mr2;
       mr1 = result;
@@ -232,7 +294,7 @@ void allOperations() {
       num2List = [];
       mr2 = 0;
       result = null;
-      _parameters = [];
+      parameters = [];
     } else {
       double divi = division(num1List.join(), num2List.join());
       num1List = ["$divi"];

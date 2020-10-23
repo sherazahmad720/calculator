@@ -18,10 +18,11 @@ class CalculatorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: backgroundColor,
+        decoration: BoxDecoration(
+            color: backgroundColor, border: Border.all(color: Colors.black12)),
         child: FlatButton(
           color: backgroundColor,
-          padding: EdgeInsets.all(30),
+          padding: EdgeInsets.all(20),
           onPressed: press,
           child: Text(
             "$text",
@@ -36,8 +37,8 @@ class CalculatorButton extends StatelessWidget {
   }
 }
 
-class ConverterButton extends StatelessWidget {
-  const ConverterButton({
+class UnitButton extends StatelessWidget {
+  const UnitButton({
     this.backgroundColor = Colors.transparent,
     this.textColor = kTextColorBlack,
     @required this.text,
@@ -53,10 +54,47 @@ class ConverterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: backgroundColor,
+        decoration: BoxDecoration(
+            color: backgroundColor, border: Border.all(color: Colors.black12)),
         child: FlatButton(
           color: backgroundColor,
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(15),
+          onPressed: press,
+          child: Text(
+            "$text",
+            style: TextStyle(
+              color: textColor,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ConvertButton extends StatelessWidget {
+  const ConvertButton({
+    this.backgroundColor = Colors.transparent,
+    this.textColor = kTextColorBlack,
+    @required this.text,
+    @required this.press,
+  });
+
+  final Color backgroundColor;
+  final Color textColor;
+  final String text;
+  final Function press;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+            color: backgroundColor, border: Border.all(color: Colors.black12)),
+        child: FlatButton(
+          color: backgroundColor,
+          padding: EdgeInsets.symmetric(vertical: 40),
           onPressed: press,
           child: Text(
             "$text",

@@ -54,7 +54,9 @@ class _CalculatorState extends State<Calculator> {
                   child: Text(
                     result == null
                         ? lengthResult == ""
-                            ? ""
+                            ? conversionResult == ""
+                                ? ""
+                                : "$conversionResult"
                             : "$lengthResult m"
                         : "$result",
                     style: kResultTextStyle,
@@ -67,177 +69,196 @@ class _CalculatorState extends State<Calculator> {
         //length functionality button
         Row(
           children: <Widget>[
-            ConverterButton(
-              text: "yard",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("yard");
-                  },
-                );
-              },
-            ),
-            ConverterButton(
-              text: "feet",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("feet");
-                  },
-                );
-              },
-            ),
-            ConverterButton(
-              text: "inch",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("inch");
-                  },
-                );
-              },
-            ),
+            // UnitButton(
+            //   text: "yard",
+            //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
+            //   press: () {
+            //     setState(
+            //       () {
+            //         calculation("yard");
+            //       },
+            //     );
+            //   },
+            // ),
+            // UnitButton(
+            //   text: "feet",
+            //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
+            //   press: () {
+            //     setState(
+            //       () {
+            //         calculation("feet");
+            //       },
+            //     );
+            //   },
+            // ),
+            // UnitButton(
+            //   text: "inch",
+            //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
+            //   press: () {
+            //     setState(
+            //       () {
+            //         calculation("inch");
+            //       },
+            //     );
+            //   },
+            // ),
           ],
         ),
-        Row(
-          children: <Widget>[
-            ConverterButton(
-              text: "Convert",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.3),
-              textColor: kTextColorWhite,
-              press: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 18.0),
-                          child: Container(
-                            height: 300,
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Convert",
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  "$displayInputs into",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      RaisedButton(
-                                          color: kButtonBackground
-                                              .withOpacity(0.7),
-                                          onPressed: () {},
-                                          child: Text("Meter")),
-                                      RaisedButton(
-                                          color: kButtonBackground
-                                              .withOpacity(0.7),
-                                          onPressed: () {},
-                                          child: Text("CentiMeter")),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      RaisedButton(
-                                          color: kButtonBackground
-                                              .withOpacity(0.7),
-                                          onPressed: () {},
-                                          child: Text("Meter")),
-                                      RaisedButton(
-                                          color: kButtonBackground
-                                              .withOpacity(0.7),
-                                          onPressed: () {},
-                                          child: Text("CentiMeter")),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      RaisedButton(
-                                          color: kButtonBackground
-                                              .withOpacity(0.7),
-                                          onPressed: () {},
-                                          child: Text("Meter")),
-                                      RaisedButton(
-                                          color: kButtonBackground
-                                              .withOpacity(0.7),
-                                          onPressed: () {},
-                                          child: Text("CentiMeter")),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+        Container(
+          // width: 200,
+          height: 100,
+          child: Row(
+            children: <Widget>[
+              ConvertButton(
+                  text: "Convert",
+                  backgroundColor: kButtonConverterBackgroud.withOpacity(0.3),
+                  textColor: kTextColorWhite,
+                  press: () {
+                    //NOTE Dialog
+                    if (isLengthConverter && parameters.length < 1) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return diolog();
+                          });
+                    }
+                  }),
+              Column(
+                children: [
+                  UnitButton(
+                    text: "yard",
+                    backgroundColor:
+                        kButtonLengthUnitBackgroud.withOpacity(0.1),
+                    press: () {
+                      if (!isMathCalculation &&
+                          !lastOptr &&
+                          !lastOptrIsLength) {
+                        setState(
+                          () {
+                            calculation("yard");
+                          },
+                        );
+                      }
+                    },
+                  ),
+                  UnitButton(
+                    text: "m",
+                    backgroundColor:
+                        kButtonLengthUnitBackgroud.withOpacity(0.1),
+                    press: () {
+                      setState(
+                        () {
+                          calculation("m");
+                        },
                       );
-                    });
-                // setState(
-                //   () {
-
-                //     // calculation("C");
-                //   },
-                // );
-              },
-            ),
-            ConverterButton(
-              text: "m",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("m");
-                  },
-                );
-              },
-            ),
-            ConverterButton(
-              text: "cm",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("cm");
-                  },
-                );
-              },
-            ),
-            ConverterButton(
-              text: "mm",
-              backgroundColor: kButtonConverterBackgroud.withOpacity(0.1),
-              press: () {
-                setState(
-                  () {
-                    calculation("mm");
-                  },
-                );
-              },
-            ),
-          ],
+                    },
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  UnitButton(
+                    text: "feet",
+                    backgroundColor:
+                        kButtonLengthUnitBackgroud.withOpacity(0.1),
+                    press: () {
+                      setState(
+                        () {
+                          calculation("feet");
+                        },
+                      );
+                    },
+                  ),
+                  UnitButton(
+                    text: "cm",
+                    backgroundColor:
+                        kButtonLengthUnitBackgroud.withOpacity(0.1),
+                    press: () {
+                      setState(
+                        () {
+                          calculation("cm");
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  UnitButton(
+                    text: "inch",
+                    backgroundColor:
+                        kButtonLengthUnitBackgroud.withOpacity(0.1),
+                    press: () {
+                      setState(
+                        () {
+                          calculation("inch");
+                        },
+                      );
+                    },
+                  ),
+                  UnitButton(
+                    text: "mm",
+                    backgroundColor:
+                        kButtonLengthUnitBackgroud.withOpacity(0.1),
+                    press: () {
+                      setState(
+                        () {
+                          calculation("mm");
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+              // UnitButton(
+              //   text: "Convert",
+              //   backgroundColor: kButtonConverterBackgroud.withOpacity(0.3),
+              //   textColor: kTextColorWhite,
+              //   press: () {
+              //     //NOTE Dialog
+              //     showDialog(
+              //         context: context,
+              //         builder: (context) {
+              //           return diolog();
+              //         });
+              //   },
+              // ),
+              // UnitButton(
+              //   text: "m",
+              //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
+              //   press: () {
+              //     setState(
+              //       () {
+              //         calculation("m");
+              //       },
+              //     );
+              //   },
+              // ),
+              // UnitButton(
+              //   text: "cm",
+              //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
+              //   press: () {
+              //     setState(
+              //       () {
+              //         calculation("cm");
+              //       },
+              //     );
+              //   },
+              // ),
+              // UnitButton(
+              //   text: "mm",
+              //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
+              //   press: () {
+              //     setState(
+              //       () {
+              //         calculation("mm");
+              //       },
+              //     );
+              //   },
+              // ),
+            ],
+          ),
         ),
         //
         Row(
@@ -268,11 +289,15 @@ class _CalculatorState extends State<Calculator> {
               text: "/",
               backgroundColor: kButtonBackground.withOpacity(0.1),
               press: () {
-                setState(
-                  () {
-                    calculation("/");
-                  },
-                );
+                if ((!lastOptr) &&
+                    (!isLengthConverter || lastOptrIsLength) &&
+                    isCalculatoinStart) {
+                  setState(
+                    () {
+                      calculation("/");
+                    },
+                  );
+                }
               },
             ),
           ],
@@ -313,11 +338,15 @@ class _CalculatorState extends State<Calculator> {
               text: "x",
               backgroundColor: kButtonBackground.withOpacity(0.1),
               press: () {
-                setState(
-                  () {
-                    calculation("x");
-                  },
-                );
+                if ((!lastOptr) &&
+                    (!isLengthConverter || lastOptrIsLength) &&
+                    isCalculatoinStart) {
+                  setState(
+                    () {
+                      calculation("x");
+                    },
+                  );
+                }
               },
             ),
           ],
@@ -357,11 +386,15 @@ class _CalculatorState extends State<Calculator> {
             CalculatorButton(
               text: "-",
               press: () {
-                setState(
-                  () {
-                    calculation("-");
-                  },
-                );
+                if ((!lastOptr) &&
+                    (!isLengthConverter || lastOptrIsLength) &&
+                    isCalculatoinStart) {
+                  setState(
+                    () {
+                      calculation("-");
+                    },
+                  );
+                }
               },
               backgroundColor: kButtonBackground.withOpacity(0.1),
             ),
@@ -403,11 +436,15 @@ class _CalculatorState extends State<Calculator> {
               text: "+",
               backgroundColor: kButtonBackground.withOpacity(0.1),
               press: () {
-                setState(
-                  () {
-                    calculation("+");
-                  },
-                );
+                if ((!lastOptr) &&
+                    (!isLengthConverter || lastOptrIsLength) &&
+                    isCalculatoinStart) {
+                  setState(
+                    () {
+                      calculation("+");
+                    },
+                  );
+                }
               },
             ),
           ],
@@ -442,16 +479,122 @@ class _CalculatorState extends State<Calculator> {
               backgroundColor: kButtonBackground,
               textColor: kTextColorWhite,
               press: () {
-                setState(
-                  () {
-                    calculation("=");
-                  },
-                );
+                if ((!lastOptr) && (!isLengthConverter || lastOptrIsLength)) {
+                  setState(
+                    () {
+                      calculation("=");
+                    },
+                  );
+                }
               },
             ),
           ],
         ),
       ],
+    );
+  }
+
+  Widget diolog() {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 18.0),
+        child: Container(
+          height: 300,
+          child: Column(
+            children: [
+              Text(
+                "Convert",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "$displayInputs into",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FlatButton(
+                        color: kButtonBackground.withOpacity(0.7),
+                        onPressed: () {
+                          setState(() {
+                            conversition("m");
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text("Meter")),
+                    FlatButton(
+                        color: kButtonBackground.withOpacity(0.7),
+                        onPressed: () {
+                          setState(() {
+                            conversition("yard");
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text("Yard")),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FlatButton(
+                        color: kButtonBackground.withOpacity(0.7),
+                        onPressed: () {
+                          setState(() {
+                            conversition("feet");
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text("Feet")),
+                    FlatButton(
+                        color: kButtonBackground.withOpacity(0.7),
+                        onPressed: () {
+                          setState(() {
+                            conversition("inch");
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text("Inch")),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FlatButton(
+                        color: kButtonBackground.withOpacity(0.7),
+                        onPressed: () {
+                          setState(() {
+                            conversition("cm");
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text("Centi Meter")),
+                    FlatButton(
+                        color: kButtonBackground.withOpacity(0.7),
+                        onPressed: () {
+                          setState(() {
+                            conversition("mm");
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text("MiliMeter")),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

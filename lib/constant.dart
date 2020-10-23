@@ -7,7 +7,8 @@ const kCancelButtonBackground = Color(0xFF9FC3CF);
 const kTextColorBlack = Color(0xFF2C5364);
 const kTextColorWhite = Color(0xFFF4FAFB);
 const kTextColorDarkBlue = Color(0xFF2C7493);
-const kButtonConverterBackgroud = Colors.grey;
+const kButtonConverterBackgroud = Colors.orange;
+const kButtonLengthUnitBackgroud = Color(0xFF7ABDD7);
 
 const typeTextStyle = TextStyle(
   fontSize: 28,
@@ -15,4 +16,4 @@ const typeTextStyle = TextStyle(
 );
 
 const kResultTextStyle = TextStyle(
-    fontSize: 40, color: kTextColorBlack, fontWeight: FontWeight.w500);
+    fontSize: 30, color: kTextColorBlack, fontWeight: FontWeight.w500);
