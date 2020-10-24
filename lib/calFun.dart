@@ -10,6 +10,7 @@ List<String> lengthinputs = [];
 
 //new logic//
 String lengthResult = "";
+String lengthResultUnit = "";
 String conversionResult = "";
 String convertInto = "";
 double mr1 = 0;
@@ -27,6 +28,7 @@ conversition(String inputUnit) {
     // conversionResult = "${mr1.toString()} $inputUnit";
     conversionResult = "${(mr1 * 1.094).toString()} $inputUnit";
     lengthResult = "";
+
     // mr1 = mr1 * 1.094;
     mr2 = 0;
     parameters = [];
@@ -103,6 +105,7 @@ calculation(String input) {
       isLengthConverter = false;
       isCalculatoinStart = false;
       lengthResult = "";
+      lengthResultUnit = "";
       return;
     }
     // if two value are available then the '=' work
@@ -113,7 +116,7 @@ calculation(String input) {
         mr1 = double.parse(lengthResult);
         mr2 = 0;
         parameters = [];
-        allInputs = ["$lengthResult m"];
+        allInputs = ["$lengthResultUnit"];
         result = null;
       } else {
         lastOptr = false;
@@ -190,17 +193,17 @@ calculation(String input) {
 
     if (num1List.length > 0 && parameters.length == 0 && lengthOptr == "") {
       if (input == "yard") {
-        mr1 = mr1 + double.parse(lengthinputs.join()) / 1.094;
+        mr1 = mr1 + double.parse(lengthinputs.join()) * 36;
       } else if (input == "feet") {
-        mr1 = mr1 + (double.parse(lengthinputs.join()) / 3.281);
+        mr1 = mr1 + (double.parse(lengthinputs.join()) * 12);
       } else if (input == "inch") {
-        mr1 = mr1 + double.parse(lengthinputs.join()) / 39.37;
-      } else if (input == "m") {
         mr1 = mr1 + double.parse(lengthinputs.join());
+      } else if (input == "m") {
+        mr1 = mr1 + double.parse(lengthinputs.join()) * 39.37;
       } else if (input == "cm") {
-        mr1 = mr1 + double.parse(lengthinputs.join()) / 100;
+        mr1 = mr1 + double.parse(lengthinputs.join()) / 2.54;
       } else if (input == "mm") {
-        mr1 = mr1 + double.parse(lengthinputs.join()) / 1000;
+        mr1 = mr1 + double.parse(lengthinputs.join()) / 25.4;
       }
       // isLengthConverter = true;
       lastOptrIsLength = true;
@@ -211,17 +214,17 @@ calculation(String input) {
       displayInputs = allInputs.join();
     } else if (num2List.length > 0 && lengthOptr == "") {
       if (input == "yard") {
-        mr2 = mr2 + double.parse(lengthinputs.join()) / 1.094;
+        mr2 = mr2 + double.parse(lengthinputs.join()) * 36;
       } else if (input == "feet") {
-        mr2 = mr2 + (double.parse(lengthinputs.join()) / 3.281);
+        mr2 = mr2 + (double.parse(lengthinputs.join()) * 12);
       } else if (input == "inch") {
-        mr2 = mr2 + double.parse(lengthinputs.join()) / 39.37;
-      } else if (input == "m") {
         mr2 = mr2 + double.parse(lengthinputs.join());
+      } else if (input == "m") {
+        mr2 = mr2 + double.parse(lengthinputs.join()) * 39.37;
       } else if (input == "cm") {
-        mr2 = mr2 + double.parse(lengthinputs.join()) / 100;
+        mr2 = mr2 + double.parse(lengthinputs.join()) / 2.54;
       } else if (input == "mm") {
-        mr2 = mr2 + double.parse(lengthinputs.join()) / 1000;
+        mr2 = mr2 + double.parse(lengthinputs.join()) / 25.4;
       }
       lastOptrIsLength = true;
       lengthOptr = input;
@@ -238,6 +241,18 @@ void allOperations() {
       result = mr1 + mr2;
       mr1 = result;
       lengthResult = "${result.toString()}";
+      lengthResultUnit = convertIntofeetInch();
+      // double resfeet = result / 12;
+      // double resinch = result - resfeet.toInt() * 12;
+
+      // if (resfeet == 0) {
+      //   lengthResultUnit = "${resinch.toString()}inch";
+      // } else if (resinch == 0) {
+      //   lengthResultUnit = "${resfeet.toInt().toString()}feet";
+      // } else {
+      //   lengthResultUnit =
+      //       "${resfeet.toInt().toString()}feet${resinch.toStringAsFixed(2)}inch";
+      // }
 
       num1List = ["$result"];
       num2List = [];
@@ -254,6 +269,7 @@ void allOperations() {
     if (isLengthConverter) {
       result = mr1 - mr2;
       mr1 = result;
+      lengthResultUnit = convertIntofeetInch();
       lengthResult = "${result.toString()}";
 
       num1List = ["$result"];
@@ -272,7 +288,7 @@ void allOperations() {
       result = mr1 * mr2;
       mr1 = result;
       lengthResult = "${result.toString()}";
-
+      lengthResultUnit = convertIntofeetInch();
       num1List = ["$result"];
       num2List = [];
       result = null;
@@ -289,7 +305,7 @@ void allOperations() {
       result = mr1 / mr2;
       mr1 = result;
       lengthResult = "${result.toString()}";
-
+      lengthResultUnit = convertIntofeetInch();
       num1List = ["$result"];
       num2List = [];
       mr2 = 0;
@@ -301,6 +317,18 @@ void allOperations() {
       num2List = [];
       result = divi;
     }
+  }
+}
+
+convertIntofeetInch() {
+  double resfeet = result / 12;
+  double resinch = result - resfeet.toInt() * 12;
+  if (resfeet.toInt() == 0) {
+    return "${resinch.toString()}inch";
+  } else if (resinch == 0) {
+    return "${resfeet.toInt().toString()}feet";
+  } else {
+    return "${resfeet.toInt().toString()}feet${resinch.toStringAsFixed(2)}inch";
   }
 }
 

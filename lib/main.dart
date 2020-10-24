@@ -57,7 +57,7 @@ class _CalculatorState extends State<Calculator> {
                             ? conversionResult == ""
                                 ? ""
                                 : "$conversionResult"
-                            : "$lengthResult m"
+                            : "$lengthResultUnit "
                         : "$result",
                     style: kResultTextStyle,
                   ),
