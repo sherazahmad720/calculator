@@ -2,13 +2,20 @@ import 'package:calculator/calFun.dart';
 import 'package:calculator/constant.dart';
 import 'package:calculator/widgets/button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// import 'package:admob_flutter/admob_flutter.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
+const String testDevice = 'Mobile_id';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Cm Inch Calculator',
@@ -34,6 +41,38 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
+  static const MobileAdTargetingInfo targetinfo = MobileAdTargetingInfo(
+      testDevices: testDevice != null ? <String>[testDevice] : null,
+      nonPersonalizedAds: true,
+      keywords: <String>['Education', 'Books', "job"]);
+  BannerAd _bannerAd;
+
+  BannerAd createBannerAd() {
+    return BannerAd(
+        // adUnitId: "ca-app-pub-7700197525069981/5915447837",
+        adUnitId: BannerAd.testAdUnitId,
+        size: AdSize.fullBanner,
+        targetingInfo: targetinfo,
+        listener: (MobileAdEvent event) {
+          print("banner add Should loaded");
+        });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAdMob.instance.initialize(appId: BannerAd.testAdUnitId);
+    _bannerAd = createBannerAd()
+      ..load()
+      ..show();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -109,20 +148,34 @@ class _CalculatorState extends State<Calculator> {
           height: 100,
           child: Row(
             children: <Widget>[
-              ConvertButton(
-                  text: "Convert",
-                  backgroundColor: kButtonConverterBackgroud.withOpacity(0.3),
-                  textColor: kTextColorWhite,
-                  press: () {
-                    //NOTE Dialog
-                    if (isLengthConverter && parameters.length < 1) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return diolog();
-                          });
-                    }
-                  }),
+              Column(
+                children: [
+                  ConvertButton(
+                      text: "Convert",
+                      backgroundColor:
+                          kButtonConverterBackgroud.withOpacity(0.3),
+                      textColor: kTextColorWhite,
+                      press: () {
+                        //NOTE Dialog
+                        if (isLengthConverter && parameters.length < 1) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return diolog();
+                              });
+                        }
+                      }),
+                  ConvertButton(
+                      text: "${String.fromCharCodes(new Runes('\u232B'))}",
+                      backgroundColor: Colors.black.withOpacity(0.3),
+                      textColor: Colors.white,
+                      press: () {
+                        setState(() {
+                          backspaceFunction();
+                        });
+                      }),
+                ],
+              ),
               Column(
                 children: [
                   UnitButton(
@@ -164,7 +217,7 @@ class _CalculatorState extends State<Calculator> {
                     press: () {
                       setState(
                         () {
-                          calculation("feet");
+                          calculation("$feetSymbol");
                         },
                       );
                     },
@@ -192,7 +245,7 @@ class _CalculatorState extends State<Calculator> {
                     press: () {
                       setState(
                         () {
-                          calculation("inch");
+                          calculation("$inchSymbol");
                         },
                       );
                     },
@@ -276,17 +329,48 @@ class _CalculatorState extends State<Calculator> {
               },
             ),
             CalculatorButton(
-              text: "()",
+              text: "( )",
               backgroundColor: kButtonBackground.withOpacity(0.1),
-              press: () {},
-            ),
-            CalculatorButton(
-              text: "%",
-              backgroundColor: kButtonBackground.withOpacity(0.1),
-              press: () {},
+              press: () {
+                setState(
+                  () {
+                    if (!braceopen && !isMathCalculation && isbracespressable) {
+                      isbracespressable = false;
+                      isLengthConverter = true;
+                      fractionPressed = false;
+                      isFractionpressable = true;
+                      braceopen = true;
+                      calculation("(");
+                    } else if (denominator.length > 0) {
+                      calculation(")");
+                      fractionPressed = false;
+
+                      braceopen = false;
+                      fraction = false;
+                    }
+                  },
+                );
+              },
             ),
             CalculatorButton(
               text: "/",
+              backgroundColor: kButtonBackground.withOpacity(0.1),
+              press: () {
+                setState(
+                  () {
+                    if (isFractionpressable &&
+                        !fractionPressed &&
+                        numerator.length > 0) {
+                      fractionPressed = true;
+                      fraction = true;
+                      calculation(" / ");
+                    }
+                  },
+                );
+              },
+            ),
+            CalculatorButton(
+              text: "$divisionSymbol",
               backgroundColor: kButtonBackground.withOpacity(0.1),
               press: () {
                 if ((!lastOptr) &&
@@ -294,7 +378,7 @@ class _CalculatorState extends State<Calculator> {
                     isCalculatoinStart) {
                   setState(
                     () {
-                      calculation("/");
+                      calculation("$divisionSymbol");
                     },
                   );
                 }
@@ -490,6 +574,10 @@ class _CalculatorState extends State<Calculator> {
             ),
           ],
         ),
+        Container(
+          width: 100,
+          height: 70,
+        )
       ],
     );
   }
@@ -548,7 +636,7 @@ class _CalculatorState extends State<Calculator> {
                         color: kButtonBackground.withOpacity(0.7),
                         onPressed: () {
                           setState(() {
-                            conversition("feet");
+                            conversition("$feetSymbol");
                             Navigator.of(context).pop();
                           });
                         },
@@ -557,7 +645,7 @@ class _CalculatorState extends State<Calculator> {
                         color: kButtonBackground.withOpacity(0.7),
                         onPressed: () {
                           setState(() {
-                            conversition("inch");
+                            conversition("$inchSymbol");
                             Navigator.of(context).pop();
                           });
                         },

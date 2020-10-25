@@ -28,7 +28,7 @@ class CalculatorButton extends StatelessWidget {
             "$text",
             style: TextStyle(
               color: textColor,
-              fontSize: 30,
+              fontSize: 20,
             ),
           ),
         ),
@@ -94,7 +94,7 @@ class ConvertButton extends StatelessWidget {
             color: backgroundColor, border: Border.all(color: Colors.black12)),
         child: FlatButton(
           color: backgroundColor,
-          padding: EdgeInsets.symmetric(vertical: 40),
+          padding: EdgeInsets.symmetric(vertical: 10),
           onPressed: press,
           child: Text(
             "$text",
