@@ -107,41 +107,7 @@ class _CalculatorState extends State<Calculator> {
         ),
         //length functionality button
         Row(
-          children: <Widget>[
-            // UnitButton(
-            //   text: "yard",
-            //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
-            //   press: () {
-            //     setState(
-            //       () {
-            //         calculation("yard");
-            //       },
-            //     );
-            //   },
-            // ),
-            // UnitButton(
-            //   text: "feet",
-            //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
-            //   press: () {
-            //     setState(
-            //       () {
-            //         calculation("feet");
-            //       },
-            //     );
-            //   },
-            // ),
-            // UnitButton(
-            //   text: "inch",
-            //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
-            //   press: () {
-            //     setState(
-            //       () {
-            //         calculation("inch");
-            //       },
-            //     );
-            //   },
-            // ),
-          ],
+          children: <Widget>[],
         ),
         Container(
           // width: 200,
@@ -185,7 +151,8 @@ class _CalculatorState extends State<Calculator> {
                     press: () {
                       if (!isMathCalculation &&
                           !lastOptr &&
-                          !lastOptrIsLength) {
+                          !lastOptrIsLength &&
+                          !braceopen) {
                         setState(
                           () {
                             calculation("yard");
@@ -199,11 +166,16 @@ class _CalculatorState extends State<Calculator> {
                     backgroundColor:
                         kButtonLengthUnitBackgroud.withOpacity(0.1),
                     press: () {
-                      setState(
-                        () {
-                          calculation("m");
-                        },
-                      );
+                      if (!isMathCalculation &&
+                          !lastOptr &&
+                          !lastOptrIsLength &&
+                          !braceopen) {
+                        setState(
+                          () {
+                            calculation("m");
+                          },
+                        );
+                      }
                     },
                   ),
                 ],
@@ -215,11 +187,16 @@ class _CalculatorState extends State<Calculator> {
                     backgroundColor:
                         kButtonLengthUnitBackgroud.withOpacity(0.1),
                     press: () {
-                      setState(
-                        () {
-                          calculation("$feetSymbol");
-                        },
-                      );
+                      if (!isMathCalculation &&
+                          !lastOptr &&
+                          !lastOptrIsLength &&
+                          !braceopen) {
+                        setState(
+                          () {
+                            calculation("$feetSymbol");
+                          },
+                        );
+                      }
                     },
                   ),
                   UnitButton(
@@ -227,11 +204,16 @@ class _CalculatorState extends State<Calculator> {
                     backgroundColor:
                         kButtonLengthUnitBackgroud.withOpacity(0.1),
                     press: () {
-                      setState(
-                        () {
-                          calculation("cm");
-                        },
-                      );
+                      if (!isMathCalculation &&
+                          !lastOptr &&
+                          !lastOptrIsLength &&
+                          !braceopen) {
+                        setState(
+                          () {
+                            calculation("cm");
+                          },
+                        );
+                      }
                     },
                   ),
                 ],
@@ -243,11 +225,16 @@ class _CalculatorState extends State<Calculator> {
                     backgroundColor:
                         kButtonLengthUnitBackgroud.withOpacity(0.1),
                     press: () {
-                      setState(
-                        () {
-                          calculation("$inchSymbol");
-                        },
-                      );
+                      if (!isMathCalculation &&
+                          !lastOptr &&
+                          !lastOptrIsLength &&
+                          !braceopen) {
+                        setState(
+                          () {
+                            calculation("$inchSymbol");
+                          },
+                        );
+                      }
                     },
                   ),
                   UnitButton(
@@ -255,61 +242,20 @@ class _CalculatorState extends State<Calculator> {
                     backgroundColor:
                         kButtonLengthUnitBackgroud.withOpacity(0.1),
                     press: () {
-                      setState(
-                        () {
-                          calculation("mm");
-                        },
-                      );
+                      if (!isMathCalculation &&
+                          !lastOptr &&
+                          !lastOptrIsLength &&
+                          !braceopen) {
+                        setState(
+                          () {
+                            calculation("mm");
+                          },
+                        );
+                      }
                     },
                   ),
                 ],
               ),
-              // UnitButton(
-              //   text: "Convert",
-              //   backgroundColor: kButtonConverterBackgroud.withOpacity(0.3),
-              //   textColor: kTextColorWhite,
-              //   press: () {
-              //     //NOTE Dialog
-              //     showDialog(
-              //         context: context,
-              //         builder: (context) {
-              //           return diolog();
-              //         });
-              //   },
-              // ),
-              // UnitButton(
-              //   text: "m",
-              //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
-              //   press: () {
-              //     setState(
-              //       () {
-              //         calculation("m");
-              //       },
-              //     );
-              //   },
-              // ),
-              // UnitButton(
-              //   text: "cm",
-              //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
-              //   press: () {
-              //     setState(
-              //       () {
-              //         calculation("cm");
-              //       },
-              //     );
-              //   },
-              // ),
-              // UnitButton(
-              //   text: "mm",
-              //   backgroundColor: kButtonLengthUnitBackgroud.withOpacity(0.1),
-              //   press: () {
-              //     setState(
-              //       () {
-              //         calculation("mm");
-              //       },
-              //     );
-              //   },
-              // ),
             ],
           ),
         ),
@@ -536,7 +482,28 @@ class _CalculatorState extends State<Calculator> {
         Row(
           children: <Widget>[
             Expanded(
-              child: Container(),
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return infoDiolog();
+                      });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black12)),
+                  child: Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(11.0),
+                    child: Text(
+                      "$infoSymbol",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  )),
+                ),
+              ),
             ),
             CalculatorButton(
               text: "0",
@@ -680,6 +647,100 @@ class _CalculatorState extends State<Calculator> {
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  //info dialog
+  Widget infoDiolog() {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 18.0),
+        child: Container(
+          height: 400,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  crossButton(),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Cm Inch Calculator",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              Container(
+                height: 350,
+                child: ListView(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text("$infoText"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20.0, right: 20),
+                      child: Text("How To Use Fraction and Lenght units",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text("$howtoText"),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String infoText =
+      """This Application Perform Simple Calculation as well as length calculation
+You can use fraction in This app And Convert One unit to another.Answer of length Calculation is provided in fraction of feet and inches
+      """;
+  String howtoText =
+      """First write any number and then press then unit button after that press any operator(+,-,/,X)
+If you want to add fraction then write whole of fraction and open  bracket by pressing "(".  Enter numerator then press fraction "/" and write denominator and close bracket by pressing ")"  and chose any unit(m,cm,inch etc.)
+If You want to write fraction which is less than 1 like 0.5 or 1/2 then you have to write 0 digit as whole
+Example: write 0.5 as "0(1/2)" and 1.5 as "1(1/2)"
+ """;
+  Widget crossButton() {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(35.0),
+      ),
+      child: ClipOval(
+        child: Material(
+          color: Colors.transparent, // button color
+          child: InkWell(
+            splashColor: Colors.lightBlue, // inkwell color
+            child: SizedBox(
+              width: 35,
+              height: 35,
+              child: Icon(
+                Icons.close,
+                color: Colors.black,
+                size: 19,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+            },
           ),
         ),
       ),

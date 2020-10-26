@@ -20,6 +20,7 @@ String inchSymbol = "${String.fromCharCodes(new Runes('\u0022'))}";
 String feetSymbol = "${String.fromCharCodes(new Runes('\u0027'))}";
 String divisionSymbol = "${String.fromCharCodes(new Runes('\u00F7'))}";
 String backspaceSymbol = "${String.fromCharCodes(new Runes('\u232B'))}";
+String infoSymbol = "${String.fromCharCodes(new Runes('\u24D8'))}";
 //
 bool isLengthConverter = false;
 bool isMathCalculation = false;

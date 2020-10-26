@@ -108,3 +108,39 @@ class ConvertButton extends StatelessWidget {
     );
   }
 }
+
+class InfoButton extends StatelessWidget {
+  const InfoButton({
+    this.backgroundColor = Colors.transparent,
+    this.textColor = kTextColorBlack,
+    @required this.text,
+    @required this.press,
+  });
+
+  final Color backgroundColor;
+  final Color textColor;
+  final String text;
+  final Function press;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+            color: backgroundColor, border: Border.all(color: Colors.black12)),
+        child: FlatButton(
+          color: backgroundColor,
+          padding: EdgeInsets.symmetric(vertical: 10),
+          onPressed: press,
+          child: Text(
+            "$text",
+            style: TextStyle(
+              color: textColor,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
